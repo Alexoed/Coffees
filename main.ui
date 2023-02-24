@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>489</width>
-    <height>342</height>
+    <height>341</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,6 +25,13 @@
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QTableWidget" name="tableWidget"/>
+    </item>
+    <item>
+     <widget class="QPushButton" name="add_button">
+      <property name="text">
+       <string>Добавить / Изменить</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
