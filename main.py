@@ -2,17 +2,21 @@ from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication, QMainWindow, \
     QTableWidgetItem, QTableWidget, QPushButton, QComboBox, QLineEdit, \
     QSpinBox
+from UI.main import Ui_Form as Main_window_ui
+from UI.addEditCoffeeForm import Ui_Form as Sub_window_ui
+
 import sys
 import sqlite3
 
 
-class Window(QMainWindow):
+class Window(QMainWindow, Main_window_ui):
     tableWidget: QTableWidget
     add_button: QPushButton
 
     def __init__(self):
         super(Window, self).__init__()
-        uic.loadUi("main.ui", self)
+        # uic.loadUi("UI/main.ui", self)
+        self.setupUi(self)
 
         self.add_button.clicked.connect(self.open)
         self.add_button.setToolTip("Выберите запись для изменения, "
@@ -34,7 +38,7 @@ class Window(QMainWindow):
                   "INNER JOIN fry ON varieties.fry_id = fry.id " \
                   "INNER JOIN state ON varieties.state_id = state.id " \
                   "INNER JOIN taste ON varieties.taste_id = taste.id"
-        con = sqlite3.connect("coffee.db")
+        con = sqlite3.connect("data/coffee.db")
         cursor = con.cursor()
         result = cursor.execute(request).fetchall()
         # print(result)
@@ -56,7 +60,7 @@ class Window(QMainWindow):
         self.tableWidget.resizeColumnsToContents()
 
 
-class ExWindow(QMainWindow):
+class ExWindow(QMainWindow, Sub_window_ui):
     fry_box: QComboBox
     state_box: QComboBox
     taste_box: QComboBox
@@ -68,9 +72,10 @@ class ExWindow(QMainWindow):
     def __init__(self, caller, index):
         super(ExWindow, self).__init__()
         self.caller = caller
-        uic.loadUi("addEditCoffeeForm.ui", self)
+        # uic.loadUi("UI/addEditCoffeeForm.ui", self)
+        self.setupUi(self)
 
-        con = sqlite3.connect("coffee.db")
+        con = sqlite3.connect("data/coffee.db")
         cursor = con.cursor()
 
         self.index = index
@@ -116,7 +121,7 @@ class ExWindow(QMainWindow):
                   f"{fry_id}, {state_id}, {taste_id}, " \
                   f"{self.price_box.text()}, {self.mass_box.text()})"
 
-        con = sqlite3.connect("coffee.db")
+        con = sqlite3.connect("data/coffee.db")
         cursor = con.cursor()
         cursor.execute(request)
         con.commit()
@@ -134,7 +139,7 @@ class ExWindow(QMainWindow):
                   f"taste_id = {taste_id} " \
                   f"WHERE id = {self.index}"
 
-        con = sqlite3.connect("coffee.db")
+        con = sqlite3.connect("data/coffee.db")
         cursor = con.cursor()
         cursor.execute(request)
         con.commit()
